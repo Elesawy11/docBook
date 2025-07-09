@@ -1,28 +1,23 @@
-import 'package:dartz/dartz.dart';
+import 'package:doc_book/core/networking/api_result.dart';
+import 'package:doc_book/features/login/data/source/login_source.dart';
 import '../../../../core/networking/api_error_handler.dart';
-import '../../../../core/networking/api_service.dart';
 import '../models/login_request.dart';
 import '../models/login_response.dart';
 
-class LoginRepo {
-  final ApiService _apiService;
+class LoginRepoImpl {
+  final LoginSource _source;
 
-  LoginRepo(this._apiService);
+  LoginRepoImpl(this._source);
 
-  Future<Either<ErrorHandler, LoginResopnseBody>> login(
-      LoginRequestBody loginRequest) async {
+  Future<ApiResult<LoginResopnseBody>> login({
+    required LoginRequestBody data,
+  }) async {
     try {
-      var response = await _apiService.login(loginRequest);
+      final response = await _source.login(data.toJson());
 
-      return right(
-        LoginResopnseBody.fromJson(
-          response,
-        ),
-      );
+      return ApiResult.success(response);
     } catch (e) {
-      return left(
-        ErrorHandler.handle(e),
-      );
+      return ApiResult.failure(ErrorHandler.handle(e.toString()));
     }
   }
 }

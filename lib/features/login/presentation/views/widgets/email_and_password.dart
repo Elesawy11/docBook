@@ -6,7 +6,7 @@ import '../../../../../core/utils/app_regex.dart';
 import '../../../../../core/utils/spacer.dart';
 import '../../../../../core/utils/color.dart';
 import '../../../../../core/widgets/app_text_form_field.dart';
-import '../../manager/login_cubit/login_cubit.dart';
+import '../../cubits/login_cubit/login_cubit.dart';
 import 'password_validation.dart';
 
 class EmailAndPassowrd extends StatelessWidget {

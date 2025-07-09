@@ -75,7 +75,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
         filled: true,
         prefixIcon: widget.prefixIcon,
       ),
-      obscureText: isObscureText,
+      obscureText: widget.isPassword == true ? isObscureText : false,
       style: Styles.font14Regular.copyWith(
         fontWeight: FontWeightHelper.medium,
         color: ColorManager.darkBlue,

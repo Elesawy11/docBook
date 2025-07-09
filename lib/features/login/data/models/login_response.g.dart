@@ -13,7 +13,7 @@ LoginResopnseBody _$LoginResopnseBodyFromJson(Map<String, dynamic> json) =>
           ? null
           : UserData.fromJson(json['data'] as Map<String, dynamic>),
       status: json['status'] as bool?,
-      code: json['code'] as int?,
+      code: (json['code'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$LoginResopnseBodyToJson(LoginResopnseBody instance) =>
@@ -25,11 +25,11 @@ Map<String, dynamic> _$LoginResopnseBodyToJson(LoginResopnseBody instance) =>
     };
 
 UserData _$UserDataFromJson(Map<String, dynamic> json) => UserData(
-      token: json['token'] as String?,
-      userName: json['username'] as String?,
-    );
+  token: json['token'] as String?,
+  userName: json['username'] as String?,
+);
 
 Map<String, dynamic> _$UserDataToJson(UserData instance) => <String, dynamic>{
-      'token': instance.token,
-      'username': instance.userName,
-    };
+  'token': instance.token,
+  'username': instance.userName,
+};

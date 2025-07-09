@@ -1,3 +1,4 @@
+import 'package:doc_book/features/login/presentation/cubits/login_cubit/login_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -51,9 +52,8 @@ abstract class AppRouter {
         builder: (context, state) => const OnboardingView(),
       ),
       StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) => AppHome(
-          navigationshell: navigationShell,
-        ),
+        builder: (context, state, navigationShell) =>
+            AppHome(navigationshell: navigationShell),
         branches: [
           StatefulShellBranch(
             routes: [
@@ -121,7 +121,10 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: Routes.loginView,
-        builder: (context, state) => const LoginView(),
+        builder: (context, state) => BlocProvider(
+          create: (context) => getIt.get<LoginCubit>(),
+          child: const LoginView(),
+        ),
       ),
       GoRoute(
         path: Routes.signupView,
@@ -141,15 +144,13 @@ abstract class AppRouter {
         routes: [
           GoRoute(
             path: Routes.doctorDetailsView,
-            builder: (context, state) => DoctorDetailsView(
-              doctorModel: state.extra as DoctorModel,
-            ),
+            builder: (context, state) =>
+                DoctorDetailsView(doctorModel: state.extra as DoctorModel),
           ),
           GoRoute(
             path: Routes.bookAppointmentView,
-            builder: (context, state) => BookAppointmentView(
-              doctorModel: state.extra as DoctorModel,
-            ),
+            builder: (context, state) =>
+                BookAppointmentView(doctorModel: state.extra as DoctorModel),
           ),
           GoRoute(
             path: Routes.bookingAppointmentDetails,
