@@ -1,4 +1,5 @@
 import 'package:doc_book/features/login/presentation/cubits/login_cubit/login_cubit.dart';
+import 'package:doc_book/features/signup/presentation/manger/sign_up_cubit/sign_up_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -128,7 +129,10 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: Routes.signupView,
-        builder: (context, state) => const SignUpView(),
+        builder: (context, state) => BlocProvider(
+          create: (context) => getIt.get<SignUpCubit>(),
+          child: const SignUpView(),
+        ),
       ),
       GoRoute(
         path: Routes.specialityView,

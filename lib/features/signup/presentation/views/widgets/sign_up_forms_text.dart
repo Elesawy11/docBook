@@ -56,12 +56,13 @@ class _SignUpFormsTextState extends State<SignUpFormsText> {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<SignUpCubit>();
     return Form(
-      key: context.read<SignUpCubit>().formKey,
+      key: cubit.formKey,
       child: Column(
         children: [
           AppTextFormField(
-            controller: context.read<SignUpCubit>().nameController,
+            controller: cubit.nameController,
             hintText: 'Name',
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -71,7 +72,7 @@ class _SignUpFormsTextState extends State<SignUpFormsText> {
           ),
           verticalSpace(16),
           AppTextFormField(
-            controller: context.read<SignUpCubit>().phoneController,
+            controller: cubit.phoneController,
             hintText: 'Phone number',
             validator: (value) {
               if (value == null ||
@@ -83,7 +84,7 @@ class _SignUpFormsTextState extends State<SignUpFormsText> {
           ),
           verticalSpace(16),
           AppTextFormField(
-            controller: context.read<SignUpCubit>().emailController,
+            controller: cubit.emailController,
             hintText: 'Email',
             validator: (value) {
               if (value == null ||
@@ -95,7 +96,7 @@ class _SignUpFormsTextState extends State<SignUpFormsText> {
           ),
           verticalSpace(16),
           AppTextFormField(
-            controller: context.read<SignUpCubit>().passwordController,
+            controller: cubit.passwordController,
             hintText: 'Password',
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -106,9 +107,7 @@ class _SignUpFormsTextState extends State<SignUpFormsText> {
           ),
           verticalSpace(24),
           AppTextFormField(
-            controller: context
-                .read<SignUpCubit>()
-                .passwordConfirmationController,
+            controller: cubit.passwordConfirmationController,
             hintText: 'Password confirmation',
             validator: (value) {
               if (value == null || value.isEmpty) {

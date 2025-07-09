@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:doc_book/features/login/data/source/login_source.dart';
+import 'package:doc_book/features/signup/data/source/signup_source.dart';
+import 'package:doc_book/features/signup/presentation/manger/sign_up_cubit/sign_up_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../features/home/data/repo/home_repo.dart';
@@ -18,18 +20,17 @@ Future<void> setupServiceLocator() async {
   Dio dio = DioFactory.getDio();
   //TODO will delete it
   getIt.registerLazySingleton<ApiService>(() => ApiService(dio));
-
+  // login feature
   getIt.registerLazySingleton(() => LoginSource(dio));
-
   getIt.registerLazySingleton<LoginRepoImpl>(() => LoginRepoImpl(getIt.get()));
-  getIt.registerLazySingleton<SignUpRepo>(
-    () => SignUpRepo(getIt.get<ApiService>()),
-  );
+  getIt.registerFactory<LoginCubit>(() => LoginCubit(getIt.get()));
+  // signup feature
+  getIt.registerLazySingleton<SignupSource>(() => SignupSource(dio));
+  getIt.registerLazySingleton<SignUpRepo>(() => SignUpRepo(getIt.get()));
+  getIt.registerFactory<SignUpCubit>(() => SignUpCubit(getIt.get()));
   getIt.registerLazySingleton<HomeRepo>(
     () => HomeRepo(getIt.get<ApiService>()),
   );
-
-  getIt.registerFactory<LoginCubit>(() => LoginCubit(getIt.get()));
 
   getIt.registerLazySingleton<DoctorCubit>(
     () => DoctorCubit(getIt.get<HomeRepo>())..getAllDoctor(),

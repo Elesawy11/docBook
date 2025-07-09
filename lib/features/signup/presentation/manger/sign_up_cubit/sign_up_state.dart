@@ -1,20 +1,11 @@
-part of 'sign_up_cubit.dart';
+import 'package:doc_book/features/signup/data/models/sign_up_response_model.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part 'sign_up_state.freezed.dart';
 
-@immutable
-sealed class SignUpState {}
-
-final class SignUpInitial extends SignUpState {}
-
-final class SignUpLoading extends SignUpState {}
-
-final class SignUpFailure extends SignUpState {
-  final String errMessage;
-
-  SignUpFailure(this.errMessage);
-}
-
-final class SignUpSuccess extends SignUpState {
-  final SignUpResponseModel signUpResponseModel;
-
-  SignUpSuccess(this.signUpResponseModel);
+@freezed
+class SignupState with _$SignupState {
+  const factory SignupState.initial() = _Initial;
+  const factory SignupState.signupLoading() = SignupLoading;
+  const factory SignupState.signupSuccess({required SignUpResponseModel response}) = SignupSuccess;
+  const factory SignupState.signupError({required String error}) = SignupError;
 }

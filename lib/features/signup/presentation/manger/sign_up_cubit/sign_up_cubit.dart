@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:doc_book/core/networking/api_result.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,12 +8,11 @@ import '../../../../../core/utils/service_locator.dart';
 import '../../../data/models/sign_up_request_model.dart';
 import '../../../data/models/sign_up_response_model.dart';
 import '../../../data/repo/sign_up_repo.dart';
+import 'sign_up_state.dart';
 
-part 'sign_up_state.dart';
-
-class SignUpCubit extends Cubit<SignUpState> {
-  SignUpCubit(this.signUpRepo) : super(SignUpInitial());
-  final SignUpRepo signUpRepo;
+class SignUpCubit extends Cubit<SignupState> {
+  SignUpCubit(this._repo) : super(SignupState.initial());
+  final SignUpRepo _repo;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
@@ -21,22 +21,31 @@ class SignUpCubit extends Cubit<SignUpState> {
       TextEditingController();
 
   final formKey = GlobalKey<FormState>();
-  Future<void> signUp({required SignUpRequestModel signUpRequest}) async {
-    emit(SignUpLoading());
+  Future<void> signUp() async {
+    emit(SignupState.signupLoading());
 
-    var response = await signUpRepo.signUp(signUpRequest: signUpRequest);
-
-    response.fold(
-      (failure) => emit(
-        SignUpFailure(failure.apiErrorModel.message ?? 'UnKnowen Error'),
+    var response = await _repo.signup(
+      data: SignUpRequestModel(
+        name: nameController.text,
+        email: emailController.text,
+        phone: phoneController.text,
+        password: passwordController.text,
+        passwordConfirmation: passwordConfirmationController.text,
       ),
-      (signUpResponseModel) {
-        getIt.get<SharedPreferences>().setString(
-          'token',
-          signUpResponseModel.userData?.token ?? '',
-        );
-        emit(SignUpSuccess(signUpResponseModel));
-      },
     );
+
+    switch (response) {
+      case Success():
+        emit(SignupState.signupSuccess(response: response.data));
+
+        break;
+      case Failure():
+        emit(
+          SignupState.signupError(
+            error:
+                response.errorHandler.apiErrorModel.message ?? 'Unkwon error',
+          ),
+        );
+    }
   }
 }
