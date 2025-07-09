@@ -11,17 +11,15 @@ class OnboardingViewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              verticalSpace(24),
-              const CustomOnboardingTitle(),
-              verticalSpace(40),
-              const CustomOnboardingBody(),
-              const CustomTextAndTextButton(),
-            ],
-          ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            verticalSpace(24),
+            const CustomOnboardingTitle(),
+            verticalSpace(40),
+            const CustomOnboardingBody(),
+            const CustomTextAndTextButton(),
+          ],
         ),
       ),
     );

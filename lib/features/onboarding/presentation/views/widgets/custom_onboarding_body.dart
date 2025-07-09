@@ -12,16 +12,13 @@ class CustomOnboardingBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        SvgPicture.asset(
-          Assets.logoOpacity,
-          fit: BoxFit.fill,
-        ),
+        SvgPicture.asset(Assets.logoOpacity, fit: BoxFit.fill),
         Container(
           foregroundDecoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Colors.white,
-                Colors.white.withOpacity(0.0),
+                Colors.white.withValues(alpha: 0.9),
+                Colors.white.withValues(alpha: 0.0),
               ],
               begin: Alignment.bottomCenter,
               end: Alignment.topCenter,
@@ -37,9 +34,7 @@ class CustomOnboardingBody extends StatelessWidget {
           child: Text(
             'Best Doctor\n Appointment App',
             textAlign: TextAlign.center,
-            style: Styles.font32Bold.copyWith(
-              color: ColorManager.mainBlue,
-            ),
+            style: Styles.font32Bold.copyWith(color: ColorManager.mainBlue),
           ),
         ),
       ],

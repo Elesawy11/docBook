@@ -9,46 +9,8 @@ import '../../../../../core/widgets/app_text_form_field.dart';
 import '../../manager/login_cubit/login_cubit.dart';
 import 'password_validation.dart';
 
-class EmailAndPassowrd extends StatefulWidget {
+class EmailAndPassowrd extends StatelessWidget {
   const EmailAndPassowrd({super.key});
-
-  @override
-  State<EmailAndPassowrd> createState() => _EmailAndPassowrdState();
-}
-
-class _EmailAndPassowrdState extends State<EmailAndPassowrd> {
-  bool hasLowerCase = false;
-  bool hasUpperCase = false;
-  bool hasSpecialCharacters = false;
-  bool hasNumber = false;
-  bool hasMinLength = false;
-  bool isObscureText = true;
-  late TextEditingController passwordController;
-
-  @override
-  void initState() {
-    super.initState();
-
-    passwordController = context.read<LoginCubit>().passwordController;
-    setupPassowrdControllerListener();
-  }
-
-  void setupPassowrdControllerListener() {
-    passwordController.addListener(() {
-      setState(() {
-        hasLowerCase = AppRegex.hasLowerCase(
-            context.read<LoginCubit>().passwordController.text);
-        hasUpperCase = AppRegex.hasUpperCase(
-            context.read<LoginCubit>().passwordController.text);
-        hasSpecialCharacters = AppRegex.hasSpecialCharacter(
-            context.read<LoginCubit>().passwordController.text);
-        hasNumber = AppRegex.hasNumber(
-            context.read<LoginCubit>().passwordController.text);
-        hasMinLength = AppRegex.hasMinLength(
-            context.read<LoginCubit>().passwordController.text);
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,36 +38,11 @@ class _EmailAndPassowrdState extends State<EmailAndPassowrd> {
                 return 'please enter valide password';
               }
             },
-            isObscureText: isObscureText,
-            suffixIcon: IconButton(
-              onPressed: () {
-                setState(() {
-                  isObscureText = !isObscureText;
-                });
-              },
-              icon: Icon(
-                isObscureText ? Icons.visibility_off : Icons.visibility,
-                color: ColorManager.mainBlue,
-                size: 18.r,
-              ),
-            ),
+            isPassword: true,
           ),
           verticalSpace(24),
-          PasswordValidations(
-            hasLowerCase: hasLowerCase,
-            hasUpperCase: hasUpperCase,
-            hasSpecialCharacters: hasSpecialCharacters,
-            hasNumber: hasNumber,
-            hasMinLength: hasMinLength,
-          ),
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    passwordController.dispose();
-    super.dispose();
   }
 }
