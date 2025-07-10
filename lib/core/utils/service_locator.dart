@@ -28,6 +28,7 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton<SignupSource>(() => SignupSource(dio));
   getIt.registerLazySingleton<SignUpRepo>(() => SignUpRepo(getIt.get()));
   getIt.registerFactory<SignUpCubit>(() => SignUpCubit(getIt.get()));
+  // home feature
   getIt.registerLazySingleton<HomeRepo>(
     () => HomeRepo(getIt.get<ApiService>()),
   );

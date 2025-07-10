@@ -1,58 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../../core/helpers/password_validation_method.dart';
 import '../../../../../core/utils/app_regex.dart';
 import '../../../../../core/utils/spacer.dart';
 import '../../../../../core/widgets/app_text_form_field.dart';
-import '../../../../login/presentation/views/widgets/password_validation.dart';
 import '../../manger/sign_up_cubit/sign_up_cubit.dart';
 
-class SignUpFormsText extends StatefulWidget {
+class SignUpFormsText extends StatelessWidget {
   const SignUpFormsText({super.key});
-
-  @override
-  State<SignUpFormsText> createState() => _SignUpFormsTextState();
-}
-
-class _SignUpFormsTextState extends State<SignUpFormsText> {
-  bool hasLowerCase = false;
-  bool hasUpperCase = false;
-  bool hasSpecialCharacters = false;
-  bool hasNumber = false;
-  bool hasMinLength = false;
-  bool isPhoneNumberValid = false;
-  bool isObscureTextPassword = true;
-  bool isObscureTextConfirmation = true;
-  late TextEditingController passwordController;
-
-  @override
-  void initState() {
-    super.initState();
-
-    passwordController = context.read<SignUpCubit>().passwordController;
-    setupPassowrdControllerListener();
-  }
-
-  void setupPassowrdControllerListener() {
-    passwordController.addListener(() {
-      setState(() {
-        hasLowerCase = AppRegex.hasLowerCase(
-          context.read<SignUpCubit>().passwordController.text,
-        );
-        hasUpperCase = AppRegex.hasUpperCase(
-          context.read<SignUpCubit>().passwordController.text,
-        );
-        hasSpecialCharacters = AppRegex.hasSpecialCharacter(
-          context.read<SignUpCubit>().passwordController.text,
-        );
-        hasNumber = AppRegex.hasNumber(
-          context.read<SignUpCubit>().passwordController.text,
-        );
-        hasMinLength = AppRegex.hasMinLength(
-          context.read<SignUpCubit>().passwordController.text,
-        );
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +21,7 @@ class _SignUpFormsTextState extends State<SignUpFormsText> {
             hintText: 'Name',
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'please enter valide name';
+                return 'The name field is required.';
               }
             },
           ),
@@ -75,10 +30,11 @@ class _SignUpFormsTextState extends State<SignUpFormsText> {
             controller: cubit.phoneController,
             hintText: 'Phone number',
             validator: (value) {
-              if (value == null ||
-                  value.isEmpty ||
-                  !AppRegex.isPhoneNumberValid(value)) {
-                return 'please enter valide phone number';
+              if (value == null || value.isEmpty) {
+                return 'The phone field is required.';
+              }
+              if (!AppRegex.isPhoneNumberValid(value)) {
+                return 'please enter valid phone number';
               }
             },
           ),
@@ -87,10 +43,11 @@ class _SignUpFormsTextState extends State<SignUpFormsText> {
             controller: cubit.emailController,
             hintText: 'Email',
             validator: (value) {
-              if (value == null ||
-                  value.isEmpty ||
-                  !AppRegex.isEmailValid(value)) {
-                return 'please enter valide email';
+              if (value == null || value.isEmpty) {
+                return 'The email field is required.';
+              }
+              if (!AppRegex.isEmailValid(value)) {
+                return 'please enter valid email';
               }
             },
           ),
@@ -98,11 +55,7 @@ class _SignUpFormsTextState extends State<SignUpFormsText> {
           AppTextFormField(
             controller: cubit.passwordController,
             hintText: 'Password',
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'please enter valide password';
-              }
-            },
+            validator: (value) => passwordValidation(value),
             isPassword: true,
           ),
           verticalSpace(24),
@@ -111,27 +64,17 @@ class _SignUpFormsTextState extends State<SignUpFormsText> {
             hintText: 'Password confirmation',
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'please enter valide password';
+                return 'The password confirmation field is required.';
+              }
+              if (value != cubit.passwordController.text.trim()) {
+                return 'Passwords do not match.';
               }
             },
             isPassword: true,
           ),
           verticalSpace(24),
-          PasswordValidations(
-            hasLowerCase: hasLowerCase,
-            hasUpperCase: hasUpperCase,
-            hasSpecialCharacters: hasSpecialCharacters,
-            hasNumber: hasNumber,
-            hasMinLength: hasMinLength,
-          ),
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    passwordController.dispose();
-    super.dispose();
   }
 }

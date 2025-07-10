@@ -18,8 +18,8 @@ class LoginCubit extends Cubit<LoginState> {
 
     final response = await _repo.login(
       data: LoginRequestBody(
-        email: emailController.text,
-        password: passwordController.text,
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
       ),
     );
 

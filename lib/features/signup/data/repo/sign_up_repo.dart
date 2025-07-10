@@ -12,6 +12,7 @@ class SignUpRepo {
   Future<ApiResult<SignUpResponseModel>> signup({
     required SignUpRequestModel data,
   }) async {
+    
     try {
       final response = await _source.signup(data.toJson());
       return ApiResult.success(response);
